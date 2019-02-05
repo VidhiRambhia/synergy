@@ -14,19 +14,20 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='sidebar.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='background.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='footer.css') }}">
-
+    <!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="static/css/materialize.min.css" media="screen,projection"/>
 
     {% if title %}
-        <title>Spons.Central - {{ title }}</title>
+        <title>synergy - {{ title }}</title>
     {% else %}
-        <title>Spons.Central</title>
+        <title>synergy</title>
     {% endif %}
 </head>
 <body>
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="/">Spons.Central</a>
+          <a class="navbar-brand mr-4" href="/">synergy</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -67,19 +68,12 @@
               <div class="col-md-3">
                 <div class="content-section" align=center>
                   <h2>Let's start</h2> <hr>
-                  <p class='text-muted'>Whom do you want to connect with today?</p>
+                  <p class='text-muted'>How would you like to learn today?</p>
                     <div class="form-group">
                         <ul class="list-group">
-                          {% if current_user.type == 'P' %}
-                              <a class="btn btn-outline-info list-group-item btn-bg list-group-item-light" href="{{ url_for('nearbySponsorRoute') }}"><h6><b>Maps</b></h6></a><hr>
-                          {% elif current_user.type == 'S' %}
-                              <li class="btn btn-outline-info list-group-item btn-bg list-group-item-light"><a href="{{ url_for('nearbyPartyRoute') }}"><h6><b>Maps</b></h6></a></li><hr>
-                          {% endif %}
-                          <li class="btn btn-outline-info list-group-item btn-bg list-group-item-light"><a href="{{ url_for('display_shortlist') }}"><h6><b>Shortlist</b></h6></a></li><hr>
-                          <li class="btn btn-outline-info list-group-item btn-bg list-group-item-light"><a href="{{ url_for('inviteRecieved') }}"><h6><b>Requests</b></h6></a></li><hr>
-                          <li class="btn btn-outline-info list-group-item btn-bg list-group-item-light"><a href="{{ url_for('chatwith') }}"><h6><b>Chat</b></h6></a></li><hr>
-
-                          <li class="btn btn-outline-info list-group-item btn-bg list-group-item-light"><a href="{{ url_for('banking') }}"><h6><b>Banking</b></h6></a></li><hr>
+                            <a class="btn btn-outline-info list-group-item btn-bg list-group-item-light" href="{{ url_for('collaborate') }}"><h6><b>Collaborate</b></h6></a><hr>
+                          <li class="btn btn-outline-info list-group-item btn-bg list-group-item-light"><a href="{{ url_for('requests') }}"><h6><b>Requests</b></h6></a></li><hr>
+                          <li class="btn btn-outline-info list-group-item btn-bg list-group-item-light"><a href="{{ url_for('currentProjects') }}"><h6><b>Current Projects</b></h6></a></li><hr>
                         </ul>
               </div>
           </div>
@@ -90,7 +84,7 @@
 
     <footer class="footer-basic-centered">
 
-          <p class="footer-company-motto">Connect. Select. Sponsor.</p>
+          <p class="footer-company-motto">ideate.work</p>
 
           <p class="footer-links">
             <a href="{{ url_for('about') }}">About Us</a>

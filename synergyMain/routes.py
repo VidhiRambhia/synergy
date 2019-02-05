@@ -73,18 +73,12 @@ def save_picture(form_picture):
     return picture_fn
 
 
-@app.route("/register_party", methods=['GET', 'POST'])
-def registerParty():
-    form = RegistrationFormParty()
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
     if form.validate_on_submit():
         user = User.query.all().pop()
-        partyUser=PartyUser(party_name=form.party_name.data,party_type=form.party_type.data,party_kind=form.party_kind.data,party_contactNo1=form.party_contactNo1.data,party_contactNo2=form.party_contactNo2.data,party_address=form.party_address.data,party_about=form.party_about.data,party_fromAmount=form.party_fromAmount.data ,party_toAmount=form.party_toAmount.data, user_id=user.id)
-
-        partyUser.party_address.replace('\n',' ')
-        geolocator = Nominatim()
-        location = geolocator.geocode(partyUser.party_address)
-        partyUser.party_latitude = location.latitude
-        partyUser.party_longitude = location.longitude
+        partyUser=User(party_name=form.party_name.data,party_type=form.party_type.data,party_kind=form.party_kind.data,party_contactNo1=form.party_contactNo1.data,party_contactNo2=form.party_contactNo2.data,party_address=form.party_address.data,party_about=form.party_about.data,party_fromAmount=form.party_fromAmount.data ,party_toAmount=form.party_toAmount.data, user_id=user.id)
 
         if form.party_logo.data:
             picture_file = save_picture(form.party_logo.data)
@@ -96,34 +90,7 @@ def registerParty():
         flash('Your account has been created! You are now able to log in', 'success')
         party_logo = url_for('static', filename='profile_pics/' + partyUser.party_logo)
         return redirect(url_for('login'))
-    return render_template('regParty.html', form=form)
-
-
-@app.route("/register_sponsor", methods=['GET', 'POST'])
-def registerSponsor():
-    form = RegistrationFormSponser()
-    if form.validate_on_submit():
-        user = User.query.all().pop()
-        sponsorUser=SponsorUser(sponsor_name=form.sponsor_name.data,sponsor_type=form.sponsor_type.data,sponsor_kind=form.sponsor_kind.data,sponsor_contactNo1=form.sponsor_contactNo1.data,sponsor_contactNo2=form.sponsor_contactNo2.data,sponsor_address=form.sponsor_address.data, sponsor_about=form.sponsor_about.data,sponsor_fromAmount=form.sponsor_fromAmount.data ,sponsor_toAmount=form.sponsor_toAmount.data, user_id=user.id)
-
-        sponsorUser.sponsor_address.replace('\n',' ')
-        geolocator = Nominatim()
-        location = geolocator.geocode(sponsorUser.sponsor_address)
-        sponsorUser.sponsor_latitude = location.latitude
-        sponsorUser.sponsor_longitude = location.longitude
-
-        if form.sponsor_logo.data:
-            picture_file = save_picture(form.sponsor_logo.data)
-            sponsorUser.sponsor_logo = picture_file
-
-        db.session.add(sponsorUser)
-        db.session.commit()
-
-        flash('Your account has been created! You are now able to log in', 'success')
-        sponsor_logo = url_for('static', filename='profile_pics/' + sponsorUser.sponsor_logo)
-        return redirect(url_for('login'))
-    return render_template('regSponsor.html', form=form)
-
+    return render_template('reg.html', form=form)
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -147,11 +114,11 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for('account'))
 
         else:
-            print('halaaa2')
+            print('swallalala')
             flash('Login Unsuccessful. Please check email and password', 'danger')
-            print('halaaa2')
+            print('shimmy shimmy')
     else:
-        print('halaaa1')
+        print('swallalala')
     return render_template('login.html', title='Login', form=form)
 
 
@@ -677,15 +644,3 @@ def team():
 @app.route("/WhatWeDo")
 def work():
     return render_template('WhatWeDo.html')
-
-
-@app.route('/banking', methods = ['GET','POST']) #parties looking for sponsors
-@login_required
-def banking():
-    return render_template('banking.html', title='Banking')
-
-
-@app.route('/email', methods = ['GET', 'POST'])
-@login_required
-def email():
-    return render_template('email.html', title='Email')
