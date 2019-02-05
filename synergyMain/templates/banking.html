@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="content-section">
+    <h3><p>Congratulations on a successful deal!</p></h3>
+    <br>
+    <b><p>Time to seal it with a transaction.</p></b>
+    <p>To make the process easier, here are some links for net banking <i>(We're a <a href = {{url_for('work')}}>new developing website</a>, so we couldn't facilitate gateways. However, we try our best to give you as nice an experience as we can! We would be gladly grateful if you are willing to sponsor us <a href = {{url_for('team')}}> here. </a> Thanks! )</i></p> <!--'here' mein 'Contact Us' ka href laga dena-->
+<br>
+    <p>The transaction may be made online by some of the following methods (these facilities are provided by every bank; user interface and limitations/charges may differ for different banks):</p>
+    <!--ordered/unordered list; names in bold. Adaquate spacing between list elements-->
+<br>
+<hr>
+<br>
+    <b>1 - Immediate Payment Service (IMPS):</b>
+    <p>A 24x7 service.*</p>
+<br>
+    <b>2 - National Electronic Funds Transfer (NEFT):</b>
+    <p>Normally, the minimum transaction amount required for NEFT is Rs 1 and the maximum amount allowed is Rs 10 Lakh. *</p>
+<br>
+    <b>3 - Real Time Gross Settlement (RTGS):</b>
+    <p>The fund transfer limit through RTGS is usually from Rs 2 Lakh to Rs 10 Lakh. Can be made only during the bank's working hours and working days.*</p>
+<br>
+    <b>4 - Unified Payment Interface (UPI):</b>
+    <p>UPI can be used fro immediate fund transfer. It uses the same system as IMPS, but is meant for mobile transfer using the bank’s app. The transaction may be made via the app downloaded on a phone by entering the payee ID and the amount detail. *</p>
+<br>
+<!--Links-->
+    <p>SBI Online: <a href="https://retail.onlinesbi.com/retail/login.htm">https://retail.onlinesbi.com/retail/login.htm</a></p>
+    <p>ICICI Bank: <a href="https://infinity.icicibank.com/corp/Login.jsp">https://infinity.icicibank.com/corp/Login.jsp</a></p>
+    <p>Bank of Baroda: <a href="https://www.bankofbaroda.co.in/login.htm">https://www.bankofbaroda.co.in/login.htm</a> [Choose from login options] </p>
+    <p>Oriental Bank of Commerce: <a href="https://www.obconline.co.in/">https://www.obconline.co.in/</a> [For logging in, choose from Retail or Corporate]</p>
+    <p>Axis Bank: <a href="https://retail.axisbank.co.in/">https://retail.axisbank.co.in/</a></p>
+    <p>Central Bank of India: <a href="https://www.centralbank.net.in/jsp/startMain.jsp">https://www.centralbank.net.in/jsp/startMain.jsp</a> [For logging in, choose from Personal or Corporate]</p>
+    <p>Deutsche Bank: <a href="https://login.deutschebank.co.in/">https://login.deutschebank.co.in/</a></p>
+    <p>HDFC Bank: <a href="https://www.hdfcbank.com/personal/ways-to-bank/bank-online/netbanking">https://www.hdfcbank.com/personal/ways-to-bank/bank-online/netbanking</a> [From the top pane, towards the right: From Ways to bank, choose Login]</p>
+    <p>IndusInd Bank: <a href="https://www.indusind.com/login-intermediary-page.html">https://www.indusind.com/login-intermediary-page.html</a> [On clicking on 'Continue to IndusNet', you will be redirected to the login page]</p>
+    <p>Kotak Mahindra Bank: <a href="https://www.kotak.com/j1001mp/netapp/MainPage.jsp">https://www.kotak.com/j1001mp/netapp/MainPage.jsp</a></p>
+    <p>citibank Online: <a href="https://www.online.citibank.co.in/products-services/online-services/internet-banking.htm">https://www.online.citibank.co.in/products-services/online-services/internet-banking.htm</a> [At the right-center of the screen, click on'Login Now'. A separate browser session will be opened for the same]</p>
+    <p>Indian Overseas Bank: <a href="https://www.iobnet.co.in/ibanking/login.do">https://www.iobnet.co.in/ibanking/login.do</a></p>
+<br> <br>
+    <p>We wish you a successful deal.</p>
+    <p><b>We are happy that you chose Spons.Central. See you again!</b></p>
+<br>
+<hr><hr>
+    <!--Footer. Should still be visible-->
+<br><i>
+    <p>*Please contact the respective bank(s) for further details.</p>
+    <!--one more footer at the bottom. Still visible -->
+    <p>*The links provided on this webpage have been verified to be authentic as of July 2018. Spons.Central provides these links to third parties to facilitate a better user experience and shall not be held responsible for any activity that occurs beyond the domains of Spons.Central's official website.</p></i>
+</div>
+{% endblock %}
