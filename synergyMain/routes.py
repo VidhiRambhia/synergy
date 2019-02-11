@@ -1,11 +1,11 @@
 import os
 import secrets
-from SponsCentral import app, db, bcrypt
-from SponsCentral.globalVar import shortlist
+from synergyMain import app, db
+#from synergyMain.globalVar import shortlist
 from PIL import Image
 from flask import Flask, session, escape, render_template, url_for, flash, redirect, request
-from SponsCentral.forms import RegistrationFormParty, RegistrationFormSponser, LoginForm, SelectForm,UpdateAccountFormParty,UpdateAccountFormSponsor, ChatBoxText, RequestForm, InviteForm
-from SponsCentral.models import PartyUser, SponsorUser, User, Conversing, Conversation
+# from synergyMain.forms import
+from synergyMain.models import User, Conversing, Conversation
 import hashlib #for SHA512
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy.orm import Session
@@ -28,22 +28,6 @@ def register():
     if form.validate_on_submit():
         if current_user.is_authenticated:
             return redirect(url_for('home'))
-        if form.type.data == 'P':
-            if form.validate_on_submit():
-                pw = (form.password.data)
-                s = 0
-                for char in pw:
-                    a = ord(char) #ASCII
-                    s = s+a #sum of ASCIIs acts as the salt
-                hashed_password = (str)((hashlib.sha512((str(s).encode('utf-8'))+((form.password.data).encode('utf-8')))).hexdigest())
-                #hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-                user = User( email= form.email.data , password= hashed_password, type= form.type.data )
-                db.session.add(user)
-                db.session.commit()
-                flash(f'Success! Please fill in the remaining details', 'success')
-            return redirect(url_for('registerParty'))
-
-        elif form.type.data == 'S':
             if form.validate_on_submit():
                 pw = (form.password.data)
                 s = 0
@@ -51,7 +35,6 @@ def register():
                    a = ord(char) #ASCII
                    s = s+a #sum of ASCIIs acts as the salt
                 hashed_password = (str)((hashlib.sha512((str(s).encode('utf-8'))+((form.password.data).encode('utf-8')))).hexdigest())
-                #hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
                 user = User(email=form.email.data, password=hashed_password, type= form.type.data )
                 db.session.add(user)
                 db.session.commit()
@@ -73,8 +56,8 @@ def save_picture(form_picture):
     return picture_fn
 
 
-@app.route("/register", methods=['GET', 'POST'])
-def register():
+@app.route("/registerDetails", methods=['GET', 'POST'])
+def registerDetails():
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User.query.all().pop()

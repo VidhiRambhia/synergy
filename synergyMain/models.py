@@ -1,4 +1,4 @@
-from SponsCentral import db, login_manager
+from synergyMain import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
 @login_manager.user_loader
