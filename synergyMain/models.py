@@ -22,8 +22,31 @@ class User(db.Model):
     conversing = db.relationship("Conversing", back_populates ="user")
     def __repr__(self):
         return f"User('{self.user_name}','{self.user_type}','{self.user_interest1}','{self.user_interest2}','{self.user_contactNo1}','{self.user_contactNo2}','{self.user_about}','{self.email}','{self.user_type}''{self.user_logo}')"
+'''
+class Contributing(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	user1 = db.Column(db.Integer, db.ForeignKey('user_id'), nullable=True)
+	user = db.relationship("User", back_populates = "contributing")
+	user2 = db.Column(db.Integer)
+	user3 = db.Column(db.Integer)
+	user4 = db.Column(db.Integer)
+	history = db.relationship("History", uselist=False, back_populates="contributing")
+	request = db.Column(db.Integer)
+	status = db.Column(db.String(30), nullable=False, default='none')
+	def __repr__(self):
+		return f"Contrubuting('{self.user1}', '{self.user2}','{self.user3}', '{self.user4}','{self.request}','{self.status}')"
 
-
+class History(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	file = db.Column(nullable=False)
+	commitMsg = db.Column(db.String(200), nullable=False)
+	time = db.Column(db.DateTime, nullable=False, default = datetime.utcnow)
+	commit_id = db.Column(db.Integer, db.ForeignKey('commit_id'))
+	contributing = db.relationship("Contributing", uselist=False, back_populates="history")
+	contributor_id = db.Column(db.Integer, nullable=False)
+	def __repr__(self):
+		return f"History('{self.commitMsg}', '{self.time}','{self.commit_id}','{self.contributor_id}','{self.file}')"
+'''
 class Conversing(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user1 = db.Column(db.Integer, db.ForeignKey('user.id'), nullable= True)
