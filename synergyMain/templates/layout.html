@@ -10,7 +10,7 @@
 
     <link rel="shortcut icon" href="static/logo.ico">
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='background.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <!--Import materialize.css-->
 
@@ -24,7 +24,7 @@
 </head>
 <body>
     <header class="site-header">
-      <nav class="brown darken-4 navbar navbar-expand-md navbar-dark">
+      <nav class="grey darken-4 navbar navbar-expand-md navbar-dark">
         <div class="container">
           <a class="navbar-brand mr-4" href="/"><h4>synergy</h4></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,17 +32,17 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="hoverable nav-item nav-link" href="{{ url_for('work') }}"><span class = 'red-text lighten-4'><b>Home</b></a><span>
-              <a class="hoverable nav-item nav-link" href="{{ url_for('about') }}"><span class = 'red-text lighten-4'><b>About</b></a><span>
+              <a class="hoverable nav-item nav-link" href="{{ url_for('work') }}"><span class = "pink-text darken-4"><b>Home</b></a><span>
+              <a class="hoverable nav-item nav-link" href="{{ url_for('about') }}"><span class = 'pink-text darken-4'><b>About</b></a><span>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if current_user.is_authenticated %}
-                <a class="hoverable nav-item nav-link" href="{{ url_for('account') }}"><span class = 'red-text lighten-4'><b>Account</b></a><span>
-                <a class="hoverable nav-item nav-link" href="{{ url_for('logout') }}"><span class = 'red-text lighten-4'><b>Logout</b></a><span>
+                <a class="hoverable nav-item nav-link" href="{{ url_for('account') }}"><span class = 'pink-text darken-4'><b>Account</b></a><span>
+                <a class="hoverable nav-item nav-link" href="{{ url_for('logout') }}"><span class = 'pink-text darken-4'><b>Logout</b></a><span>
               {% else %}
-                <a class="hoverable nav-item nav-link" href="{{ url_for('login') }}"><span class = 'red-text lighten-4'><b>Login</b></a><span>
-                <a class="hoverable nav-item nav-link" href="{{ url_for('register') }}"><span class = 'red-text lighten-4'><b>Register</b></a><span>
+                <a class="hoverable nav-item nav-link" href="{{ url_for('login') }}"><span class = 'pink-text darken-4'><b>Login</b></a><span>
+                <a class="hoverable nav-item nav-link" href="{{ url_for('register') }}"><span class = 'pink-text darken-4'><b>Register</b></a><span>
               {% endif %}
             </div>
           </div>
@@ -81,21 +81,13 @@
     </main>
     {% endif %}
 
-    <footer class="footer-basic-centered">
-
-          <p class="footer-company-motto">ideate.work</p>
-
-          <p class="footer-links">
-            <a href="{{ url_for('about') }}">About Us</a>
-            ·
-            <a href="{{ url_for('team') }}">Meet The Team</a>
-            ·
-            <a href="{{ url_for('work') }}">What We Do</a>
-          </p>
-
-          <p class="footer-company-name">© 2019 Copyright: synergy</p>
-
-        </footer>
+    <div class = "footer">
+      <h4 class ="pink-text darken-4"><b>ideate.work</b></h4>
+      <h6><a href="{{ url_for('about') }}" class = "hoverable"></i>ABOUT US</a>  •
+      <a href="{{ url_for('team') }}"></i>MEET THE TEAM</a>  •
+      <a href="{{ url_for('work') }}"></i>WHAT WE DO</a></h6>
+      <p class = "amber-text lighten-2">© 2019 Copyright: synergy</p>
+    </div>
 
 
     <!-- Optional JavaScript -->
