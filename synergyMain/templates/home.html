@@ -3,7 +3,8 @@
 <title>Home</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='background.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 <link rel="shortcut icon" href="static/logo.ico">
 
 <head>
@@ -12,42 +13,27 @@
 </head>
 
 <body>
-
+<br><br><br><br><br><br><br><br><br>
 <!-- Navbar (sit on top) -->
-<div class="w3-top">
-  <div class="w3-bar w3-white w3-card" id="myNavbar">
-    <a href="#home" class="w3-bar-item w3-button w3-wide">synergy</a>
-
-    </div>
-    <!-- Hide right-floated links on small screens and replace them with a menu icon -->
-
-    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
-      <i class="fa fa-bars"></i>
-    </a>
+<div class="container valign center-align">
+    <h1 class = "white-text"><b>synergy</b></h1>
+		<div class = "row">
+			<h3><p><a href="{{ url_for('register') }}" class="hoverable waves-effect waves-light btn-large amber lighten-3 black-text">Start today</a>
+			<a href="{{ url_for('login') }}" class="hoverable waves-effect waves-light btn-large amber lighten-3 black-text">Login</a>
+			<a href="{{ url_for('about') }}" class="hoverable waves-effect waves-light btn-large amber lighten-3 black-text"><b>What is Synergy</b></a></p>
+		</a></h3>
   </div>
 </div>
 
-<!-- Header with full-height image -->
-<header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
-  <div class="w3-display-left w3-text-white" style="padding:48px">
-    <!-- <span class="w3-jumbo w3-hide-small">Sponsorships that matter</span><br>
-    <span class="w3-xxlarge w3-hide-large w3-hide-medium">Make a beginning that matters</span><br>
-    <span class="w3-large">Say 'NO' to hassle. 'YES' to Spons.Central.</span> -->
-    <p><a href="{{ url_for('register') }}" class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Start today</a>
-    <a href="{{ url_for('login') }}" class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Login</a>
-    <a href="{{ url_for('about') }}" class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">What is Synergy</a></p>
-  </div>
-
 </header>
-<!-- Footer-->
-<footer class="w3-center w3-black w3-padding-64">
-  <h3> ideate.work</h3>
-  <a href="{{ url_for('about') }}" class="footer-links"></i>ABOUT US</a>  •
-  <a href="{{ url_for('team') }}" class="footer-links"></i>MEET THE TEAM</a>  •
-  <a href="{{ url_for('work') }}" class="footer-links"></i>WHAT WE DO</a>
 
-  <p>© 2019 Copyright: synergy</p>
-</footer>
+<div class = "footer">
+  <h4 class ="white-text"><b>ideate.work</b></h4>
+  <h6><a href="{{ url_for('about') }}" class = "hoverable"></i>ABOUT US</a>  •
+  <a href="{{ url_for('team') }}"></i>MEET THE TEAM</a>  •
+  <a href="{{ url_for('work') }}"></i>WHAT WE DO</a></h6>
+  <p class = "amber-text lighten-2">© 2019 Copyright: synergy</p>
+</div>
 <!--<footer class="footer-basic-centered">
 
           <p class="footer-company-motto">Connect. Select. Sponsor.</p>
