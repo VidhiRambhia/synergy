@@ -6,8 +6,8 @@
 <html itemscope itemtype="http://schema.org/Article">
 
 <body>
-
-    <div class="content-section">
+<br> <br> <br>
+    <div class="valign col s12 center-align transparent hoverable">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
@@ -50,18 +50,15 @@
             </fieldset>
         </form>
         <hr>
-            <small class="text-muted ml-2">
-                <a href="#">Forgot Password?</a>
-            </small>
         </div>
         </form>
-    
+
     <div class="border-top pt-3">
         <small class="text-muted">
             Need An Account? <a class="ml-2" href="{{ url_for('register') }}">Sign Up Now</a>
         </small>
     </div>
-    
+
     </body>
 </html>
 {% endblock content %}
