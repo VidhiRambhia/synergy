@@ -4,7 +4,7 @@ from synergyMain import app, db
 #from synergyMain.globalVar import shortlist
 from PIL import Image
 from flask import Flask, session, escape, render_template, url_for, flash, redirect, request
-# from synergyMain.forms import
+from synergyMain.forms import LoginForm, SelectForm
 from synergyMain.models import User, Conversing, Conversation
 import hashlib #for SHA512
 from flask_login import login_user, current_user, logout_user, login_required

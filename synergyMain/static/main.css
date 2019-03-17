@@ -34,5 +34,11 @@
 
 .btn-large:hover
 {
-    background-color: #ffd54f;
+    background-color: #ffab00;
+}
+
+.button-border
+{
+    padding: 30px;
+    border-radius: 50px;
 }
