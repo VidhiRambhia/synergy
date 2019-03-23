@@ -12,15 +12,9 @@ from math import sqrt
 import requests
 from geopy.geocoders import Nominatim
 from sqlalchemy import or_ , and_
-# for file uploads
-from flask import Flask, flash, request, redirect, url_for
-from werkzeug.utils import secure_filename
-from flask import send_from_directory
 
 UPLOAD_FOLDER = 'static/UPLOAD_FOLDER'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-app = Flask(__name__)
-
 
 @app.route("/")
 @app.route("/home")
