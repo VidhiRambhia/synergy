@@ -12,6 +12,7 @@ from math import sqrt
 import requests
 from geopy.geocoders import Nominatim
 from sqlalchemy import or_ , and_
+from flask import send_from_directory
 
 UPLOAD_FOLDER = 'UPLOAD_FOLDER'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -351,13 +352,13 @@ def shortlisted(user2_id):
 @login_required
 def display_shortlist():
 
-	form = InviteForm()
+    form = InviteForm()
 
-	if current_user.type == 'S':
-		return render_template ('shortlistPageSponsor.html', title = 'Shortlist', userList=shortlist, form=form)
+    if current_user.type == 'S':
+        return render_template ('shortlistPageSponsor.html', title = 'Shortlist', userList=shortlist, form=form)
 
-	elif current_user.type == 'P':
-		return render_template ('shortlistPageParty.html', title = 'Shortlist', userList=shortlist, form=form)
+    elif current_user.type == 'P':
+        return render_template ('shortlistPageParty.html', title = 'Shortlist', userList=shortlist, form=form)
 
 
 
@@ -581,10 +582,10 @@ def allowed_file(filename):
     return '.' in filename and '/'
 
 
-@app.route("/upload", methods=['GET', 'POST'])
+@app.route("/uploads", methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        print("hiiiiiii")
+        print("swallalala")
         # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
@@ -604,6 +605,10 @@ def upload_file():
     return render_template('uploads.html', title='Upload')
     
 
+@app.route('/uploads/<filename>')
+def view_uploaded(filename):
+    uploaded_file = send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    return render_template('uploaded.html', title='View', uploaded_file=uploaded_file)
 
 @app.route("/about")
 def about():
