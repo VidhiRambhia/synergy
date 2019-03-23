@@ -13,7 +13,7 @@ import requests
 from geopy.geocoders import Nominatim
 from sqlalchemy import or_ , and_
 
-UPLOAD_FOLDER = '/static/UPLOAD_FOLDER'
+UPLOAD_FOLDER = 'UPLOAD_FOLDER'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 @app.route("/")
