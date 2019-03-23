@@ -1,20 +1,23 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="content-section">
-      <div class="media">
-        <img class="rounded-circle account-img" src="{{ user_logo }}">
-        <div class="media-body">
-          <h3 class="account-heading">Welcome, {{ current_user.user_name }}</h3>
-          <p class="text-secondary">{{ current_user.email }}</p>
+      <div class="row valign wrapper">
+        <div class="col s2"
+            <img class="circle responive-img account-img" src="{{ current_user.user_logo }}">
+        </div>
+        <div class="col s10">
+          <h3 class="account-heading amber-text"><b>Welcome,</b>{{ current_user.user_name }}<br>
         </div>
       </div>
+
+
+    <div class = "dim card transparent hoverable col s12">
         <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Account Info</legend>
+                <h4 class="pink-text darken-3"><b>Account Info</b></h4>
                 {{image_file}}
                 <div class="form-group">
-                    {{ form.email.label(class="form-control-label") }}
+                    <h5 class = "pink-text darken-4">Email</h5>
                     {% if form.email.errors %}
                         {{ form.email(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -26,8 +29,11 @@
                         {{ form.email(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+
+                <hr><br>
+
                 <div class="form-group">
-                    {{ form.user_logo.label() }}
+                    <h5 class = "pink-text darken-4">Update your profile picture</h5>
                     {{ form.user_logo(class="form-control-file") }}
                     {% if form.user_logo.errors %}
                         {% for error in form.user_logo.errors %}
@@ -36,8 +42,10 @@
                     {% endif %}
                 </div>
 
+                <hr><br>
+
                 <div class="form-group">
-                    {{ form.user_name.label(class="form-control-label") }}
+                    <h5 class = "pink-text darken-4">Is this username fine?</h5>
                     {% if form.user_name.errors %}
                         {{ form.user_name(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -51,7 +59,7 @@
                 </div>
 
                 <div class="form-group">
-                    {{ form.user_interest1.label(class="form-control-label") }}
+                    <h5 class = "pink-text darken-4">I'm passionate about working with:</h5>
                     {% if form.user_interest1.errors %}
                         {{ form.user_interest1(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -65,7 +73,6 @@
                 </div>
 
                 <div class="form-group">
-                    {{ form.user_interest2.label(class="form-control-label") }}
                     {% if form.user_interest2.errors %}
                         {{ form.user_interest2(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -78,10 +85,10 @@
                     {% endif %}
                 </div>
 
-                
+                <hr><br>
 
                 <div class="form-group">
-                    {{ form.user_about.label(class="form-control-label") }}
+                    <h5 class = "pink-text darken-4">About</h5>
                     {% if form.user_about.errors %}
                         {{ form.user_about(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -96,8 +103,9 @@
 
             </fieldset>
             <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
+                {{ form.submit(class="button-border hoverable waves-effect waves-light btn-large amber lighten-3 black-text") }}
             </div>
         </form>
+    </div>
     </div>
 {% endblock content %}
