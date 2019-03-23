@@ -19,6 +19,43 @@ class User(db.Model):
     conversing = db.relationship("Conversing", back_populates ="user")
     def __repr__(self):
         return f"User('{self.user_name}','{self.user_type}','{self.user_interest1}','{self.user_interest2}','{self.user_contactNo1}','{self.user_contactNo2}','{self.user_about}','{self.email}','{self.user_type}''{self.user_logo}')"
+
+class Repository(db.Model):
+    __tablename__ = 'repository'
+    id = db.Column(db.Integer, primary_key=True)
+    repo_name = db.Column(db.String(20), nullable=False)
+    repo_desc = db.Column(db.String(200)) #Description
+    #isPublic = db.Column(db.Boolean, nullable=False)
+    user1 = db.Column(db.Integer, db.ForeignKey('user.id'), nullable= True)
+    user2 = db.Column(db.Integer, db.ForeignKey('user.id'), nullable= True)
+    user3 = db.Column(db.Integer, db.ForeignKey('user.id'), nullable= True)
+    user4 = db.Column(db.Integer, db.ForeignKey('user.id'), nullable= True)
+
+    def __repr__(self):
+        return f"Repository('{self.repo_name}', '{self.repo_desc}')"
+
+
+class Folder(db.Model):
+    __tablename__ = 'folder'
+    id = db.Column(db.Integer, primary_key=True)
+    repo_id =db.Column(db.Integer, db.ForeignKey('repository.id'), nullable= False)
+    folder_filename = db.Column(db.String, default=None, nullable=False)
+    folder_url = db.Column(db.String, default=None, nullable=False)
+
+    def __repr__(self):
+        return f"File('{self.folder_filename}','{self.folder_url}')"
+
+class File(db.Model):
+    __tablename__ = 'file'
+    id = db.Column(db.Integer, primary_key=True)
+    repo_id =db.Column(db.Integer, db.ForeignKey('repository.id'), nullable= False)
+    folder_id = db.Column(db.Integer, db.ForeignKey('folder.id'), nullable= True)
+    file_filename = db.Column(db.String, default=None, nullable=False)
+    file_url = db.Column(db.String, default=None, nullable=False)
+
+    def __repr__(self):
+        return f"File('{self.file_filename}','{self.file_url}')"
+
 '''
 class Contributing(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -65,12 +102,3 @@ class Conversation(db.Model):
     def __repr__(self):
         return f"Conversation('{self.text}','{self.time}','{self.conversing_id}', '{self.sender_id}')"
 
-class Repository(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    repo_name = db.Column(db.String(20), nullable=False)
-    repo_desc = db.Column(db.String(200))
-    #isPublic = db.Column(db.Boolean, nullable=False)
-    file_filename = db.Column(db.String, default=None, nullable=True)
-    file_url = db.Column(db.String, default=None, nullable=True)
-    def __repr__(self):
-        return f"Repository('{self.repo_name}', '{self.repo_desc}','{self.file_filename}','{self.file_url}')"

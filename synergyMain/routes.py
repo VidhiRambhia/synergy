@@ -607,8 +607,9 @@ def upload_file():
 
 @app.route('/uploads/<filename>')
 def view_uploaded(filename):
-    uploaded_file = send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-    return render_template('uploaded.html', title='View', uploaded_file=uploaded_file)
+    #uploaded_file = send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    file_path = os.path.join(app.root_path,'UPLOAD_FOLDER/', filename)
+    return render_template('uploaded.html', title='View', file_path = file_path)
 
 @app.route("/about")
 def about():
