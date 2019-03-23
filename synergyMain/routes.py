@@ -46,7 +46,7 @@ def register():
                 db.session.add(user)
                 db.session.commit()
                 flash(f'Success! Please login and start developing', 'success')
-                user_logo = url_for('static', filename='profile_pics/' + user.party_logo)
+                user_logo = url_for('static', filename='profile_pics/' + user.user_logo)
             return redirect(url_for('login'))
     else: print('halaaaa')
     return render_template('reg.html', form=form)
@@ -64,25 +64,6 @@ def save_picture(form_picture):
     return picture_fn
 
 
-"""@app.route("/registerDetails", methods=['GET', 'POST'])
-def registerDetails():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User.query.all().pop()
-        partyUser=User(party_name=form.party_name.data,party_type=form.party_type.data,party_kind=form.party_kind.data,party_contactNo1=form.party_contactNo1.data,party_contactNo2=form.party_contactNo2.data,party_address=form.party_address.data,party_about=form.party_about.data,party_fromAmount=form.party_fromAmount.data ,party_toAmount=form.party_toAmount.data, user_id=user.id)
-
-        if form.party_logo.data:
-            picture_file = save_picture(form.party_logo.data)
-            partyUser.party_logo = picture_file
-
-        db.session.add(partyUser)
-        db.session.commit()
-
-        flash('Your account has been created! You are now able to log in', 'success')
-        party_logo = url_for('static', filename='profile_pics/' + partyUser.party_logo)
-        return redirect(url_for('login'))
-    return render_template('regDetails.html', form=form)
-"""
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -111,7 +92,6 @@ def login():
     else:
         print('swallalala')
     return render_template('login.html', title='Login', form=form)
-
 
 
 @app.route("/logout")
@@ -149,160 +129,6 @@ def account():
     return render_template('account.html', title='Account',user_logo = user_logo, form=form)
 
 
-'''
-def nearbyPartyFunc():
-    sponsorUser = SponsorUser.query.filter_by(user_id= current_user.id).first()
-    lat = sponsorUser.sponsor_latitude
-    lng = sponsorUser.sponsor_longitude
-    extent = 6000 #radius distance in meters, centered at sponsor address
-    list_parties = []
-    for party in PartyUser.query.all():
-        list_parties.append(party)
-
-    party_data = []
-    nearbyParties = []
-
-    for party in list_parties:
-        party_data = [party.party_name, party.party_latitude, party.party_longitude, party.party_address, party.user_id, party.party_fromAmount, party.party_toAmount]
-        nearbyParties.append(party_data)
-
-    elements = len(nearbyParties)
-    return nearbyParties, lat, lng, elements
-
-
-
-@app.route('/nearbyParty', methods = ['GET', 'POST']) #sponsor looking for parties
-@login_required
-def nearbyPartyRoute():
-    nearbyParties, lat, lng, elements = nearbyPartyFunc()
-    sponsorUser = SponsorUser.query.filter_by(user_id=current_user.id).first()
-    return render_template('nearList.html', nearby_list = nearbyParties, lat = lat, lng = lng, elements = elements, sponsorUser = sponsorUser, title = 'Nearby Parties')
-
-
-
-def nearbySponsorFunc():
-    partyUser = PartyUser.query.filter_by(user_id= current_user.id).first()
-    lat = partyUser.party_latitude
-    lng = partyUser.party_longitude
-    extent = 6000 #radius distance in meters, centered at party address
-    list_sponsors = []
-    for sponsor in SponsorUser.query.all():
-        list_sponsors.append(sponsor)
-
-    sponsor_data = []
-    nearbySponsors = []
-
-    for sponsor in list_sponsors:
-        sponsor_data = [sponsor.sponsor_name, sponsor.sponsor_latitude, sponsor.sponsor_longitude, sponsor.sponsor_address, sponsor.user_id, sponsor.sponsor_fromAmount, sponsor.sponsor_toAmount]
-        nearbySponsors.append(sponsor_data)
-
-    elements = len(nearbySponsors)
-    return nearbySponsors, lat, lng, elements
-
-
-
-@app.route('/nearbySponsor', methods = ['GET','POST']) #parties looking for sponsors
-@login_required
-def nearbySponsorRoute():
-    nearbySponsors, lat, lng, elements = nearbySponsorFunc()
-    partyUser = PartyUser.query.filter_by(user_id=current_user.id).first()
-    return render_template('nearList.html', nearby_list = nearbySponsors, lat = lat, lng = lng, elements = elements, partyUser = partyUser, title = 'Nearby Sponsor')
-'''
-
-@app.route("/user/<user2_id>", methods = ['GET', 'POST'])
-@login_required
-def user2_account(user2_id):
-
-    conversing=Conversing.query.filter(and_(Conversing.user1==current_user.id,Conversing.user2==user2_id)).first()
-    if conversing==None:
-
-        if current_user.type == 'P':
-
-            form=InviteForm()
-            sponsorUser=SponsorUser.query.filter_by(user_id=user2_id).first()
-            user = User.query.filter_by(id  = sponsorUser.user_id).first()
-            flag=1
-            if form.validate_on_submit():
-                conversing=Conversing(user1=current_user.id,user2=user2_id,status='Sent')
-                db.session.add(conversing)
-                db.session.commit()
-
-            return render_template('User2Account_sponsor.html', title='Account', sponsorUser=sponsorUser,user = user,form=form,flag=flag)
-
-        elif current_user.type == 'S':
-
-            form=InviteForm()
-            partyUser = PartyUser.query.filter_by(user_id=user2_id).first()
-            user = User.query.filter_by(id  = partyUser.user_id).first()
-            flag=1
-            if form.validate_on_submit():
-                conversing=Conversing(user1=current_user.id,user2=user2_id,status='Sent')
-                db.session.add(conversing)
-                db.session.commit()
-
-            return render_template('User2Account_party.html', title='Account', partyUser=partyUser, user = user,form=form,flag=flag)
-
-    else:
-        if current_user.type == 'P':
-            flag=0
-            sponsorUser=SponsorUser.query.filter_by(user_id=user2_id).first()
-            user = User.query.filter_by(id  = sponsorUser.user_id).first()
-
-            return render_template('User2Account_sponsor.html', title='Account', sponsorUser=sponsorUser, user = user,flag=flag)
-
-        elif current_user.type == 'S':
-            flag=0
-            partyUser = PartyUser.query.filter_by(user_id=user2_id).first()
-            user = User.query.filter_by(id  = partyUser.user_id).first()
-
-            return render_template('User2Account_party.html', title='Account', partyUser=partyUser, user = user,flag=flag)
-
-
-@app.route("/requests", methods= ['POST', 'GET'])
-@login_required
-def inviteRecieved():
-
-    userList=[]
-    conversing= Conversing.query.filter(and_(Conversing.status=='Sent',Conversing.user2==current_user.id)).all()
-    form = RequestForm()
-    print(conversing)
-    print(10001)
-
-    if current_user.type == 'S':
-        for user in conversing:
-            user_invitee=PartyUser.query.filter_by(user_id=user.user1).first()
-            #user_name=user_invitee.party_name
-            userList.append(user_invitee)
-            print(user_invitee.party_name)
-
-            if form.validate_on_submit():
-                if form.invite_status.data=='1':
-                    user.status='In-touch'
-                    db.session.commit()
-                elif  form.invite_status.data=='0':
-                    user.status='Not Accepted'
-                    db.session.commit()
-        return render_template ('requestsPageSponsor.html', title = 'requests', form=form, userList=userList)
-
-    if current_user.type == 'P':
-        for user in conversing:
-            user_invitee=SponsorUser.query.filter_by(user_id=user.user1).first()
-            #user_name=user_invitee.sponsor_name
-            userList.append(user_invitee)
-            print(user_invitee.sponsor_name)
-
-            if form.validate_on_submit():
-                if form.invite_status.data=='1':
-                    user.status='In-touch'
-                    db.session.commit()
-                elif  form.invite_status.data=='0':
-                    user.status='Not Accepted'
-                    db.session.commit()
-
-        return render_template ('requestsPageParty.html', title = 'requests', form=form, userList=userList)
-
-
-
 @app.route("/shortlist/<user2_id>", methods= ['POST', 'GET'])
 @login_required
 def shortlisted(user2_id):
@@ -310,11 +136,11 @@ def shortlisted(user2_id):
     form = InviteForm()
 
     if current_user.type == 'S':
-        shortlisted_user=PartyUser.query.filter_by(user_id=user2_id).first()
+        shortlisted_user=user.query.filter_by(user_id=user2_id).first()
 
         flag=0
-        for partyUser in shortlist:
-            if partyUser.user_id == shortlisted_user.user_id:
+        for user in shortlist:
+            if user.user_id == shortlisted_user.user_id:
                 flag=1
                 print("nahin hua")
                 break
@@ -344,7 +170,7 @@ def shortlisted(user2_id):
         print(shortlist)
         #session.expunge(shortlisted_user)
         db.session.commit()
-        return render_template ('shortlistPageParty.html', title = 'Shortlist', userList=shortlist, form=form)
+        return render_template ('shortlistPageuser.html', title = 'Shortlist', userList=shortlist, form=form)
 
 
 
@@ -358,34 +184,7 @@ def display_shortlist():
         return render_template ('shortlistPageSponsor.html', title = 'Shortlist', userList=shortlist, form=form)
 
     elif current_user.type == 'P':
-        return render_template ('shortlistPageParty.html', title = 'Shortlist', userList=shortlist, form=form)
-
-
-
-@app.route("/individual_address/<otherUser_id>", methods = ['GET', 'POST'])
-@login_required
-def individual_address(otherUser_id):
-
-    if current_user.type == 'P':
-        partyUser = PartyUser.query.filter_by(user_id= current_user.id).first()
-        lat = partyUser.party_latitude
-        lng = partyUser.party_longitude
-
-        otherUser = SponsorUser.query.filter_by(user_id=otherUser_id).first()
-        lat2 = otherUser.sponsor_latitude
-        lng2 = otherUser.sponsor_longitude
-
-    elif current_user.type == 'S':
-
-        sponsorUser = SponsorUser.query.filter_by(user_id= current_user.id).first()
-        lat = sponsorUser.sponsor_latitude
-        lng = sponsorUser.sponsor_longitude
-
-        otherUser = PartyUser.query.filter_by(user_id=otherUser_id).first()
-        lat2 = otherUser.party_latitude
-        lng2 = otherUser.party_longitude
-
-    return render_template ('API.html', title = 'Compare Your Location', lat=lat, lng=lng, lat2=lat2, lng2=lng2, current_user=current_user)
+        return render_template ('shortlistPageuser.html', title = 'Shortlist', userList=shortlist, form=form)
 
 
 
@@ -411,8 +210,8 @@ def chatwith():
                         associated_user=[sponsorUser.user_id,sponsorUser.sponsor_name]
                         associated_users_list.append(associated_user)
                     elif current_user.type == 'S':
-                        partyUser= PartyUser.query.filter_by(user_id=nowuser.user2).first()
-                        associated_user=[partyUser.user_id,partyUser.party_name]
+                        user= user.query.filter_by(user_id=nowuser.user2).first()
+                        associated_user=[user.user_id,user.user_name]
                         associated_users_list.append(associated_user)
             elif nowuser.user2== current_user.id:
                 if nowuser.status=='In-touch':
@@ -421,8 +220,8 @@ def chatwith():
                         associated_user=[sponsorUser.user_id,sponsorUser.sponsor_name]
                         associated_users_list.append(associated_user)
                     elif current_user.type == 'S':
-                        partyUser= PartyUser.query.filter_by(user_id=nowuser.user1).first()
-                        associated_user=[partyUser.user_id,partyUser.party_name]
+                        user= user.query.filter_by(user_id=nowuser.user1).first()
+                        associated_user=[user.user_id,user.user_name]
                         associated_users_list.append(associated_user)
         if associated_users_list==[]:
             return render_template ('chatError.html', title = 'No Users')
@@ -465,8 +264,8 @@ def chat(chatwith_id):
 
         elif current_user.type=='S':
             if nowuser.user1== current_user.id :
-                user=PartyUser.query.filter_by(user_id=chatwith_id).first()
-                messages=[[user.party_name]]
+                user=user.query.filter_by(user_id=chatwith_id).first()
+                messages=[[user.user_name]]
                 if form.validate_on_submit() :
                     conversation= Conversation(text = form.text.data, conversing_id= nowuser.id, sender_id= current_user.id )
                     db.session.add(conversation)
@@ -476,14 +275,14 @@ def chat(chatwith_id):
                     messages.append(message)
 
             elif nowuser.user2==current_user.id :
-                user=PartyUser.query.filter_by(user_id=chatwith_id).first()
-                messages=[[user.party_name]]
+                user=user.query.filter_by(user_id=chatwith_id).first()
+                messages=[[user.user_name]]
                 if form.validate_on_submit() :
                     conversation= Conversation(text = form.text.data, conversing_id= nowuser.id, sender_id= current_user.id  )
                     db.session.add(conversation)
                     db.session.commit()
                 for conversation in Conversation.query.filter_by(conversing_id = nowuser.id).all():
-                        #partyUser=PartyUser.query.filter_by(user_id=chatwith_id).first()#just for now
+                        #user=user.query.filter_by(user_id=chatwith_id).first()#just for now
                     message=[conversation.text,conversation.time, conversation.sender_id]
                     messages.append(message)
 
@@ -498,10 +297,10 @@ def filterType(type):
 
     if current_user.type == 'P':
 
-        partyUser = PartyUser.query.filter_by(user_id= current_user.id).first()
+        user = user.query.filter_by(user_id= current_user.id).first()
 
-        lat = partyUser.party_latitude
-        lng = partyUser.party_longitude
+        lat = user.user_latitude
+        lng = user.user_longitude
 
         nearbySponsors = nearbySponsorFunc()
         filteredList = SponsorUser.query.filter_by(sponsor_type=type).all()
@@ -512,7 +311,7 @@ def filterType(type):
             filteredSponsors.append(sponsor_data)
 
         elements = len(filteredSponsors)
-        return render_template('nearList.html', nearby_list = filteredSponsors, lat = lat, lng = lng, elements = elements, partyUser = partyUser)
+        return render_template('nearList.html', nearby_list = filteredSponsors, lat = lat, lng = lng, elements = elements, user = user)
 
     elif current_user.type == 'S':
 
@@ -521,13 +320,13 @@ def filterType(type):
         lat = sponsorUser.sponsor_latitude
         lng = sponsorUser.sponsor_longitude
 
-        nearbyParties = nearbyPartyFunc()
-        filteredList = PartyUser.query.filter_by(party_type=type).all()
+        nearbyParties = nearbyuserFunc()
+        filteredList = user.query.filter_by(user_type=type).all()
         filteredParties = []
 
-        for party in filteredList:
-            party_data = [party.party_name, party.party_latitude, party.party_longitude, party.party_address, party.user_id]
-            filteredParties.append(party_data)
+        for user in filteredList:
+            user_data = [user.user_name, user.user_latitude, user.user_longitude, user.user_address, user.user_id]
+            filteredParties.append(user_data)
 
         elements = len(filteredParties)
         return render_template('nearList.html', nearby_list = filteredParties, lat = lat, lng = lng, elements = elements, sponsorUser = sponsorUser)
@@ -541,10 +340,10 @@ def filterKind(kind):
 
     if current_user.type == 'P':
 
-        partyUser = PartyUser.query.filter_by(user_id= current_user.id).first()
+        user = user.query.filter_by(user_id= current_user.id).first()
 
-        lat = partyUser.party_latitude
-        lng = partyUser.party_longitude
+        lat = user.user_latitude
+        lng = user.user_longitude
 
         nearbySponsors = nearbySponsorFunc()
         filteredList = SponsorUser.query.filter_by(sponsor_kind=kind).all()
@@ -555,7 +354,7 @@ def filterKind(kind):
             filteredSponsors.append(sponsor_data)
 
         elements = len(filteredSponsors)
-        return render_template('nearList.html', nearby_list = filteredSponsors, lat = lat, lng = lng, elements = elements, partyUser = partyUser)
+        return render_template('nearList.html', nearby_list = filteredSponsors, lat = lat, lng = lng, elements = elements, user = user)
 
 
     elif current_user.type == 'S':
@@ -565,13 +364,13 @@ def filterKind(kind):
         lat = sponsorUser.sponsor_latitude
         lng = sponsorUser.sponsor_longitude
 
-        nearbyParties = nearbyPartyFunc()
-        filteredList = PartyUser.query.filter_by(party_kind=kind).all()
+        nearbyParties = nearbyuserFunc()
+        filteredList = user.query.filter_by(user_kind=kind).all()
         filteredParties = []
 
-        for party in filteredList:
-            party_data = [party.party_name, party.party_latitude, party.party_longitude, party.party_address, party.user_id]
-            filteredParties.append(party_data)
+        for user in filteredList:
+            user_data = [user.user_name, user.user_latitude, user.user_longitude, user.user_address, user.user_id]
+            filteredParties.append(user_data)
 
         elements = len(filteredParties)
         return render_template('nearList.html', nearby_list = filteredParties, lat = lat, lng = lng, elements = elements, sponsorUser = sponsorUser)
@@ -607,8 +406,7 @@ def upload_file():
 
 @app.route('/uploads/<filename>')
 def view_uploaded(filename):
-    uploaded_file = send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-    return render_template('uploaded.html', title='View', uploaded_file=uploaded_file)
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route("/about")
 def about():
