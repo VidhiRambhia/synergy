@@ -66,7 +66,7 @@ def save_picture(form_picture):
 
 
 
-@app.route("/login", methods=['GET', 'POST'])
+'''@app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
@@ -89,6 +89,34 @@ def login():
     else:
         print('oh major shit')
     return render_template('login.html', title='Login', form=form)
+'''
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+
+        #modified to use SHA512
+
+        s = 0
+        for char in (form.password.data):
+            a = ord(char)
+            s = s+a
+        now_hash = (str)((hashlib.sha512((str(s).encode('utf-8'))+((form.password.data).encode('utf-8')))).hexdigest())
+        #if user and bcrypt.check_password_hash(user.password, form.password.data):
+        if (user and (user.password==now_hash)):
+
+            login_user(user)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('account'))
+
+        else:
+            print('halaaa2')
+            flash('Login Unsuccessful. Please check email and password', 'danger')
+            print('halaaa2')
+    else:
+        print('halaaa1')
+    return render_template('login.html', title='Login', form=form)
 
 
 @app.route("/logout")
@@ -103,8 +131,8 @@ def account():
     form = UpdateAccountForm()
     user=User.query.filter_by(id=current_user.id).first()
     if form.validate_on_submit():
-        if form.picture.data:
-            picture_file = save_picture(form.picture.data)
+        if form.user_logo.data:
+            picture_file = save_picture(form.user_logo.data)
             user.user_logo = picture_file
         current_user.email = form.email.data
         user.user_name=form.user_name.data

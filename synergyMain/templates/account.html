@@ -27,10 +27,10 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
-                    {{ form.picture.label() }}
-                    {{ form.picture(class="form-control-file") }}
-                    {% if form.picture.errors %}
-                        {% for error in form.picture.errors %}
+                    {{ form.user_logo.label() }}
+                    {{ form.user_logo(class="form-control-file") }}
+                    {% if form.user_logo.errors %}
+                        {% for error in form.user_logo.errors %}
                             <span class="text-danger">{{ error }}</span></br>
                         {% endfor %}
                     {% endif %}
@@ -78,19 +78,7 @@
                     {% endif %}
                 </div>
 
-                <div class="form-group">
-                    {{ form.user_address.label(class="form-control-label") }}
-                    {% if form.user_address.errors %}
-                        {{ form.user_address(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.user_address.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.user_address(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
+                
 
                 <div class="form-group">
                     {{ form.user_about.label(class="form-control-label") }}
@@ -106,33 +94,6 @@
                     {% endif %}
                 </div>
 
-                <div class="form-group">
-                    {{ form.user_fromAmount.label(class="form-control-label") }}
-                    {% if form.user_fromAmount.errors %}
-                        {{ form.user_fromAmount(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.user_fromAmount.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.user_fromAmount(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.user_toAmount.label(class="form-control-label") }}
-                    {% if form.user_toAmount.errors %}
-                        {{ form.user_toAmount(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.user_toAmount.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.user_toAmount(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
             </fieldset>
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
