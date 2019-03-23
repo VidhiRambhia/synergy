@@ -64,3 +64,13 @@ class Conversation(db.Model):
     sender_id = db.Column(db.Integer, unique = False , nullable= False )
     def __repr__(self):
         return f"Conversation('{self.text}','{self.time}','{self.conversing_id}', '{self.sender_id}')"
+
+class Repository(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    repo_name = db.Column(db.String(20), nullable=False)
+    repo_desc = db.Column(db.String(200))
+    #isPublic = db.Column(db.Boolean, nullable=False)
+    file_filename = db.Column(db.String, default=None, nullable=True)
+    file_url = db.Column(db.String, default=None, nullable=True)
+    def __repr__(self):
+        return f"Repository('{self.repo_name}', '{self.repo_desc}','{self.file_filename}','{self.file_url}')"

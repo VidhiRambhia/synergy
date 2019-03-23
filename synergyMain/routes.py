@@ -13,7 +13,7 @@ import requests
 from geopy.geocoders import Nominatim
 from sqlalchemy import or_ , and_
 
-UPLOAD_FOLDER = '/static/UPLOAD_FOLDER'
+UPLOAD_FOLDER = 'UPLOAD_FOLDER'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 @app.route("/")
@@ -577,12 +577,14 @@ def filterKind(kind):
 
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and '/'
+
 
 @app.route("/upload", methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+        print("hiiiiiii")
         # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
@@ -595,8 +597,10 @@ def upload_file():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = file.filename
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file', filename=filename))
+            print(filename);
+            file_path = os.path.join(app.root_path, 'UPLOAD_FOLDER/', filename)
+            #file.save(os.path.join('UPLOAD_FOLDER'))
+            file.save(file_path)
     return render_template('uploads.html', title='Upload')
     
 

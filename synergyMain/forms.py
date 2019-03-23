@@ -16,6 +16,10 @@ class SelectForm(FlaskForm):
     user_interest2 = SelectField('Interest', choices=user_interests, validators=[Required()])
     user_about =  TextAreaField('About Your Organization', validators=[DataRequired()] )
     user_logo = FileField('Logo',validators=[FileAllowed(['jpg', 'png'])])
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
     submit = SubmitField('Proceed')
 
     def validate_email(self, email):
@@ -52,7 +56,6 @@ class UpdateAccountForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('Tha email is taken. Please choose a different one.')
-
 
 
 

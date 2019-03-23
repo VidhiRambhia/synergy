@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/static/UPLOAD_FOLDER'
+UPLOAD_FOLDER = 'UPLOAD_FOLDER'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app = Flask(__name__)
 
