@@ -3,7 +3,7 @@ import secrets
 from synergyMain import app, db
 from PIL import Image
 from flask import Flask, session, escape, render_template, url_for, flash, redirect, request
-from synergyMain.forms import LoginForm, SelectForm
+from synergyMain.forms import LoginForm, SelectForm, UpdateAccountForm
 from synergyMain.models import User, Conversing, Conversation
 import hashlib #for SHA512
 from flask_login import login_user, current_user, logout_user, login_required
@@ -46,7 +46,7 @@ def register():
                 db.session.add(user)
                 db.session.commit()
                 flash(f'Success! Please fill in the remaining details', 'success')
-            return redirect(url_for('registerSponsor'))
+            return redirect(url_for('login'))
     else: print('halaaaa')
     return render_template('reg.html', form=form)
 
