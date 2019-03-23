@@ -35,10 +35,16 @@ def register():
                    a = ord(char) #ASCII
                    s = s+a #sum of ASCIIs acts as the salt
                 hashed_password = (str)((hashlib.sha512((str(s).encode('utf-8'))+((form.password.data).encode('utf-8')))).hexdigest())
-                user = User(email=form.email.data, password=hashed_password)
+                user = User(email=form.email.data, password=hashed_password,user_name=form.user_name,user_interest1 = form.user_interest1,user_interest2 = form.user_interest2, user_about= form.user_about)
+                
+                if form.user_logo.data:
+                    picture_file = save_picture(form.user_logo.data)
+                    user.user_logo = picture_file
+
                 db.session.add(user)
                 db.session.commit()
-                flash(f'Success! Please fill in the remaining details', 'success')
+                flash(f'Success! Please login and start developing', 'success')
+                user_logo = url_for('static', filename='profile_pics/' + user.party_logo)
             return redirect(url_for('login'))
     else: print('halaaaa')
     return render_template('reg.html', form=form)
@@ -56,7 +62,7 @@ def save_picture(form_picture):
     return picture_fn
 
 
-@app.route("/registerDetails", methods=['GET', 'POST'])
+"""@app.route("/registerDetails", methods=['GET', 'POST'])
 def registerDetails():
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -74,7 +80,7 @@ def registerDetails():
         party_logo = url_for('static', filename='profile_pics/' + partyUser.party_logo)
         return redirect(url_for('login'))
     return render_template('regDetails.html', form=form)
-
+"""
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -115,73 +121,30 @@ def logout():
 @app.route("/account", methods= ['POST', 'GET'])
 @login_required
 def account():
-    if current_user.type == 'P':
-        form = UpdateAccountFormParty()
-        partyUser = PartyUser.query.filter_by(user_id=current_user.id).first()
-        if form.validate_on_submit():
-            if form.picture.data:
-                picture_file = save_picture(form.picture.data)
-                partyUser.party_logo = picture_file
-            current_user.email = form.email.data
-            partyUser.party_name=form.party_name.data
-            partyUser.party_type=form.party_type.data
-            partyUser.party_kind=form.party_kind.data
-            partyUser.party_fromAmount=form.party_fromAmount.data
-            partyUser.party_toAmount=form.party_toAmount.data
-            partyUser.party_about=form.party_about.data
-            partyUser.party_address=form.party_address.data
-            partyUser.party_contactNo1=form.party_contactNo1.data
-            partyUser.party_contactNo2=form.party_contactNo2.data
-            db.session.commit()
-            flash('Your account has been updated!', 'success')
-            return redirect(url_for('account'))
-        elif request.method == 'GET':
-            form.email.data = current_user.email
-            form.party_name.data=partyUser.party_name
-            form.party_type.data=partyUser.party_type
-            form.party_kind.data=partyUser.party_kind
-            form.party_fromAmount.data=partyUser.party_fromAmount
-            form.party_toAmount.data=partyUser.party_toAmount
-            form.party_about.data=partyUser.party_about
-            form.party_address.data=partyUser.party_address
-            form.party_contactNo1.data=partyUser.party_contactNo1
-            form.party_contactNo2.data=partyUser.party_contactNo2
-        party_logo = url_for('static', filename='profile_pics/' + partyUser.party_logo)
-        return render_template('accountParty.html', title='Account',party_logo=party_logo, form=form)
-
-    elif current_user.type == 'S':
-        form = UpdateAccountFormSponsor()
-        sponsorUser=SponsorUser.query.filter_by(user_id=current_user.id).first()
-        if form.validate_on_submit():
-            if form.picture.data:
-                picture_file = save_picture(form.picture.data)
-                sponsorUser.sponsor_logo = picture_file
-            current_user.email = form.email.data
-            sponsorUser.sponsor_name=form.sponsor_name.data
-            sponsorUser.sponsor_type=form.sponsor_type.data
-            sponsorUser.sponsor_kind=form.sponsor_kind.data
-            sponsorUser.sponsor_fromAmount=form.sponsor_fromAmount.data
-            sponsorUser.sponsor_toAmount=form.sponsor_toAmount.data
-            sponsorUser.sponsor_about=form.sponsor_about.data
-            sponsorUser.sponsor_address=form.sponsor_address.data
-            sponsorUser.sponsor_contactNo1=form.sponsor_contactNo1.data
-            sponsorUser.sponsor_contactNo2=form.sponsor_contactNo2.data
-            db.session.commit()
-            flash('Your account has been updated!', 'success')
-            return redirect(url_for('account'))
-        elif request.method == 'GET':
-            form.email.data = current_user.email
-            form.sponsor_name.data=sponsorUser.sponsor_name
-            form.sponsor_type.data=sponsorUser.sponsor_type
-            form.sponsor_kind.data=sponsorUser.sponsor_kind
-            form.sponsor_fromAmount.data=sponsorUser.sponsor_fromAmount
-            form.sponsor_toAmount.data=sponsorUser.sponsor_toAmount
-            form.sponsor_about.data=sponsorUser.sponsor_about
-            form.sponsor_address.data=sponsorUser.sponsor_address
-            form.sponsor_contactNo1.data=sponsorUser.sponsor_contactNo1
-            form.sponsor_contactNo2.data=sponsorUser.sponsor_contactNo2
-        sponsor_logo = url_for('static', filename='profile_pics/' + sponsorUser.sponsor_logo)
-        return render_template('accountSponsor.html', title='Account',sponsor_logo=sponsor_logo, form=form)
+ 
+    form = UpdateAccountForm()
+    user==User.query.filter_by(user_id=current_user.id).first()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            user.user_logo = picture_file
+        current_user.email = form.email.data
+        user.user_name=form.sponsor_name.data
+        user.user_about=form.sponsor_about.data
+        user.user_interest1=form.user_interest1.data
+        user.user_interest2=form.user_interest2.data
+        db.session.commit()
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.email.data = current_user.email
+        form.user_name.data=user.user_name
+        form.user_about.data=user.user_about
+        form.user_interest1.data=user.user_interest1
+        form.user_interest2.data=user.user_interest2
+            
+    user_logo = url_for('static', filename='profile_pics/' + user.user_logo)
+    return render_template('account.html', title='Account',user_logo = user_logo, form=form)
 
 
 '''
