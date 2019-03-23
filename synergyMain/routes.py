@@ -30,24 +30,25 @@ def register():
     if form.validate_on_submit():
         if current_user.is_authenticated:
             return redirect(url_for('home'))
-            if form.validate_on_submit():
-                pw = (form.password.data)
-                s = 0
-                for char in pw:
-                   a = ord(char) #ASCII
-                   s = s+a #sum of ASCIIs acts as the salt
-                hashed_password = (str)((hashlib.sha512((str(s).encode('utf-8'))+((form.password.data).encode('utf-8')))).hexdigest())
-                user = User(email=form.email.data, password=hashed_password,user_name=form.user_name,user_interest1 = form.user_interest1,user_interest2 = form.user_interest2, user_about= form.user_about)
+            
+        pw = (form.password.data)
+        s = 0
+        for char in pw:
+            a = ord(char) #ASCII
+            s = s+a #sum of ASCIIs acts as the salt
+        hashed_password = (str)((hashlib.sha512((str(s).encode('utf-8'))+((form.password.data).encode('utf-8')))).hexdigest())
+        user = User(email=form.email.data, password=hashed_password,user_name=form.user_name.data,user_interest1 = form.user_interest1.data,user_interest2 = form.user_interest2.data, user_about= form.user_about.data)
                 
-                if form.user_logo.data:
-                    picture_file = save_picture(form.user_logo.data)
-                    user.user_logo = picture_file
+        if form.user_logo.data:
+            picture_file = save_picture(form.user_logo.data)
+            user.user_logo = picture_file
 
-                db.session.add(user)
-                db.session.commit()
-                flash(f'Success! Please login and start developing', 'success')
-                user_logo = url_for('static', filename='profile_pics/' + user.user_logo)
-            return redirect(url_for('login'))
+        db.session.add(user)
+        db.session.commit()
+        flash(f'Success! Please login and start developing', 'success')
+        user_logo = url_for('static', filename='profile_pics/' + user.user_logo)
+        print(user)
+        return redirect(url_for('login'))
     else: print('halaaaa')
     return render_template('reg.html', form=form)
 
@@ -70,7 +71,7 @@ def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-
+        print("HIIIIIIIII")
         #modified to use SHA512
 
         s = 0
@@ -81,7 +82,6 @@ def login():
         #if user and bcrypt.check_password_hash(user.password, form.password.data):
         if (user and (user.password==now_hash)):
 
-            login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('account'))
 

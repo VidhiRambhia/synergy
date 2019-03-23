@@ -18,7 +18,7 @@ class User(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable= True)
     conversing = db.relationship("Conversing", back_populates ="user")
     def __repr__(self):
-        return f"User('{self.user_name}','{self.user_type}','{self.user_interest1}','{self.user_interest2}','{self.user_contactNo1}','{self.user_contactNo2}','{self.user_about}','{self.email}','{self.user_type}''{self.user_logo}')"
+        return f"User('{self.user_name}','{self.user_interest1}','{self.user_interest2}','{self.user_about}','{self.email}','{self.user_logo}')"
 
 class Repository(db.Model):
     __tablename__ = 'repository'
