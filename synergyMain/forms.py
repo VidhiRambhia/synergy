@@ -16,7 +16,10 @@ class SelectForm(FlaskForm):
     user_interest2 = SelectField('Interest', choices=user_interests, validators=[Required()])
     user_about =  TextAreaField('About Your Organization', validators=[DataRequired()] )
     user_logo = FileField('Logo',validators=[FileAllowed(['jpg', 'png'])])
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
     submit = SubmitField('Proceed')
 
     def validate_email(self, email):
