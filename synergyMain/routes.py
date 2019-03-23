@@ -35,13 +35,13 @@ def register():
                    a = ord(char) #ASCII
                    s = s+a #sum of ASCIIs acts as the salt
                 hashed_password = (str)((hashlib.sha512((str(s).encode('utf-8'))+((form.password.data).encode('utf-8')))).hexdigest())
-                user = User(email=form.email.data, password=hashed_password, type= form.type.data )
+                user = User(email=form.email.data, password=hashed_password)
                 db.session.add(user)
                 db.session.commit()
                 flash(f'Success! Please fill in the remaining details', 'success')
             return redirect(url_for('registerSponsor'))
     else: print('halaaaa')
-    return render_template('selectForm.html', form=form)
+    return render_template('reg.html', form=form)
 
 
 def save_picture(form_picture):
@@ -73,7 +73,7 @@ def registerDetails():
         flash('Your account has been created! You are now able to log in', 'success')
         party_logo = url_for('static', filename='profile_pics/' + partyUser.party_logo)
         return redirect(url_for('login'))
-    return render_template('reg.html', form=form)
+    return render_template('regDetails.html', form=form)
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -184,7 +184,7 @@ def account():
         return render_template('accountSponsor.html', title='Account',sponsor_logo=sponsor_logo, form=form)
 
 
-
+'''
 def nearbyPartyFunc():
     sponsorUser = SponsorUser.query.filter_by(user_id= current_user.id).first()
     lat = sponsorUser.sponsor_latitude
@@ -236,15 +236,13 @@ def nearbySponsorFunc():
 
 
 
-
-
 @app.route('/nearbySponsor', methods = ['GET','POST']) #parties looking for sponsors
 @login_required
 def nearbySponsorRoute():
     nearbySponsors, lat, lng, elements = nearbySponsorFunc()
     partyUser = PartyUser.query.filter_by(user_id=current_user.id).first()
     return render_template('nearList.html', nearby_list = nearbySponsors, lat = lat, lng = lng, elements = elements, partyUser = partyUser, title = 'Nearby Sponsor')
-
+'''
 
 @app.route("/user/<user2_id>", methods = ['GET', 'POST'])
 @login_required

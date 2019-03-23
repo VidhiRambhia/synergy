@@ -9,7 +9,6 @@ class SelectForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Length(max=120) ,Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    ##type = RadioField('User Type',choices=[('P','Sponsored Party'),('S','Sponsor')])
     submit = SubmitField('Proceed')
 
     def validate_email(self, email):
