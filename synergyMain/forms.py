@@ -10,19 +10,25 @@ class SelectForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     user_name = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
+<<<<<<< HEAD
+    user_interests = [('M','Machine Learning'),('B', 'Blockchain'),('C', 'Cybersecurity')]
+=======
     user_interests = [('0','Machine Learning'),('1', 'Blockchain'),('2', 'Cybersecurity')]
+>>>>>>> 85c44d0f8679554377b14704cb2587260a003967
     user_interest1 = SelectField('Interest', choices=user_interests, validators=[Required()])
     user_interest2 = SelectField('Interest', choices=user_interests, validators=[Required()])
     user_about =  TextAreaField('About Your Organization', validators=[DataRequired()] )
     user_logo = FileField('Logo',validators=[FileAllowed(['jpg', 'png'])])
+<<<<<<< HEAD
+
+=======
+>>>>>>> 85c44d0f8679554377b14704cb2587260a003967
     submit = SubmitField('Proceed')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('Tha email is taken. Please choose a different one.')
-
-
 
 
 class LoginForm(FlaskForm):
@@ -40,7 +46,11 @@ class UpdateAccountForm(FlaskForm):
     password = PasswordField('Update Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     user_name = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
+<<<<<<< HEAD
+    user_interests = [('M','Machine Learning'),('B', 'Blockchain'),('C', 'Cybersecurity')]
+=======
     user_interests = [('0','Machine Learning'),('1', 'Blockchain'),('2', 'Cybersecurity')]
+>>>>>>> 85c44d0f8679554377b14704cb2587260a003967
     user_interest1 = SelectField('Your area of Interest', choices=user_interests, validators=[Required()])
     user_interest2 = SelectField('Your area of Interest', choices=user_interests, validators=[Required()])
     user_about =  TextAreaField('About Your Organization', validators=[DataRequired()] )

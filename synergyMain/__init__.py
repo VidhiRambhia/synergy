@@ -1,15 +1,14 @@
-
-from flask import Flask
+import os
+from flask import Flask, flash, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-#from flask_app import app as application
+from werkzeug.utils import secure_filename
 
+UPLOAD_FOLDER = '/static/UPLOAD_FOLDER'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app = Flask(__name__)
 
-#ath = '/home/nidheekamble/mysite'
-#if path not in sys.path:
-#   sys.path.append(path)
-
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Central.db'
 db = SQLAlchemy(app)

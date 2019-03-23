@@ -1,7 +1,6 @@
 import os
 import secrets
 from synergyMain import app, db
-#from synergyMain.globalVar import shortlist
 from PIL import Image
 from flask import Flask, session, escape, render_template, url_for, flash, redirect, request
 from synergyMain.forms import LoginForm, SelectForm, UpdateAccountForm
@@ -10,10 +9,12 @@ import hashlib #for SHA512
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy.orm import Session
 from math import sqrt
-#from googlemaps import Client as GoogleMaps
 import requests
 from geopy.geocoders import Nominatim
 from sqlalchemy import or_ , and_
+
+UPLOAD_FOLDER = '/static/UPLOAD_FOLDER'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 @app.route("/")
 @app.route("/home")
@@ -574,6 +575,30 @@ def filterKind(kind):
         elements = len(filteredParties)
         return render_template('nearList.html', nearby_list = filteredParties, lat = lat, lng = lng, elements = elements, sponsorUser = sponsorUser)
 
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route("/upload", methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file', filename=filename))
+    return render_template('uploads.html', title='Upload')
+    
 
 
 @app.route("/about")
