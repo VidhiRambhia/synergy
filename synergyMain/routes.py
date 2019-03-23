@@ -81,16 +81,13 @@ def login():
         now_hash = (str)((hashlib.sha512((str(s).encode('utf-8'))+((form.password.data).encode('utf-8')))).hexdigest())
         #if user and bcrypt.check_password_hash(user.password, form.password.data):
         if (user and (user.password==now_hash)):
-
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('account'))
+            return redirect(url_for('account'))
 
         else:
-            print('swallalala')
             flash('Login Unsuccessful. Please check email and password', 'danger')
-            print('shimmy shimmy')
+            print('oh shit')
     else:
-        print('swallalala')
+        print('oh major shit')
     return render_template('login.html', title='Login', form=form)
 
 
@@ -101,18 +98,17 @@ def logout():
 
 
 @app.route("/account", methods= ['POST', 'GET'])
-@login_required
 def account():
  
     form = UpdateAccountForm()
-    user==User.query.filter_by(user_id=current_user.id).first()
+    user=User.query.filter_by(id=current_user.id).first()
     if form.validate_on_submit():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             user.user_logo = picture_file
         current_user.email = form.email.data
-        user.user_name=form.sponsor_name.data
-        user.user_about=form.sponsor_about.data
+        user.user_name=form.user_name.data
+        user.user_about=form.user_about.data
         user.user_interest1=form.user_interest1.data
         user.user_interest2=form.user_interest2.data
         db.session.commit()
@@ -136,7 +132,7 @@ def shortlisted(user2_id):
     form = InviteForm()
 
     if current_user.type == 'S':
-        shortlisted_user=user.query.filter_by(user_id=user2_id).first()
+        shortlisted_user=User.query.filter_by(user_id=user2_id).first()
 
         flag=0
         for user in shortlist:
@@ -151,15 +147,15 @@ def shortlisted(user2_id):
         print(shortlist)
         #session.expunge(shortlisted_user)
         db.session.commit()
-        return render_template ('shortlistPageSponsor.html', title = 'Shortlist', userList=shortlist, form=form)
+        return render_template ('shortlistPageuser.html', title = 'Shortlist', userList=shortlist, form=form)
 
 
     elif current_user.type =='P':
-        shortlisted_user=SponsorUser.query.filter_by(user_id=user2_id).first()
+        shortlisted_user=User.query.filter_by(user_id=user2_id).first()
 
         flag=0
-        for sponsorUser in shortlist:
-            if sponsorUser.user_id == shortlisted_user.user_id:
+        for user in shortlist:
+            if user.user_id == shortlisted_user.user_id:
                 flag=1
                 print("nahin hua")
                 break
@@ -181,7 +177,7 @@ def display_shortlist():
     form = InviteForm()
 
     if current_user.type == 'S':
-        return render_template ('shortlistPageSponsor.html', title = 'Shortlist', userList=shortlist, form=form)
+        return render_template ('shortlistPageuser.html', title = 'Shortlist', userList=shortlist, form=form)
 
     elif current_user.type == 'P':
         return render_template ('shortlistPageuser.html', title = 'Shortlist', userList=shortlist, form=form)
@@ -206,21 +202,21 @@ def chatwith():
             if nowuser.user1== current_user.id:
                 if nowuser.status=='In-touch':
                     if current_user.type == 'P':
-                        sponsorUser= SponsorUser.query.filter_by(user_id=nowuser.user2).first()
-                        associated_user=[sponsorUser.user_id,sponsorUser.sponsor_name]
+                        user= User.query.filter_by(user_id=nowuser.user2).first()
+                        associated_user=[user.user_id,user.user_name]
                         associated_users_list.append(associated_user)
                     elif current_user.type == 'S':
-                        user= user.query.filter_by(user_id=nowuser.user2).first()
+                        user= User.query.filter_by(user_id=nowuser.user2).first()
                         associated_user=[user.user_id,user.user_name]
                         associated_users_list.append(associated_user)
             elif nowuser.user2== current_user.id:
                 if nowuser.status=='In-touch':
                     if current_user.type == 'P':
-                        sponsorUser= SponsorUser.query.filter_by(user_id=nowuser.user1).first()
-                        associated_user=[sponsorUser.user_id,sponsorUser.sponsor_name]
+                        user= User.query.filter_by(user_id=nowuser.user1).first()
+                        associated_user=[user.user_id,user.user_name]
                         associated_users_list.append(associated_user)
                     elif current_user.type == 'S':
-                        user= user.query.filter_by(user_id=nowuser.user1).first()
+                        user= User.query.filter_by(user_id=nowuser.user1).first()
                         associated_user=[user.user_id,user.user_name]
                         associated_users_list.append(associated_user)
         if associated_users_list==[]:
@@ -241,8 +237,8 @@ def chat(chatwith_id):
         if current_user.type=='P':
             if nowuser.user1== current_user.id:
 
-                user=SponsorUser.query.filter_by(user_id=chatwith_id).first()
-                messages=[[user.sponsor_name]]
+                user=User.query.filter_by(user_id=chatwith_id).first()
+                messages=[[user.user_name]]
                 if form.validate_on_submit() :
                     conversation= Conversation(text = form.text.data, conversing_id= nowuser.id, sender_id= current_user.id  )
                     db.session.add(conversation)
@@ -252,8 +248,8 @@ def chat(chatwith_id):
                     messages.append(message)
 
             elif  nowuser.user2==current_user.id:
-                user=SponsorUser.query.filter_by(user_id=chatwith_id).first()
-                messages=[[user.sponsor_name]]
+                user=User.query.filter_by(user_id=chatwith_id).first()
+                messages=[[user.user_name]]
                 if form.validate_on_submit() :
                     conversation= Conversation(text = form.text.data, conversing_id= nowuser.id, sender_id= current_user.id  )
                     db.session.add(conversation)
@@ -264,7 +260,7 @@ def chat(chatwith_id):
 
         elif current_user.type=='S':
             if nowuser.user1== current_user.id :
-                user=user.query.filter_by(user_id=chatwith_id).first()
+                user=User.query.filter_by(user_id=chatwith_id).first()
                 messages=[[user.user_name]]
                 if form.validate_on_submit() :
                     conversation= Conversation(text = form.text.data, conversing_id= nowuser.id, sender_id= current_user.id )
@@ -275,14 +271,14 @@ def chat(chatwith_id):
                     messages.append(message)
 
             elif nowuser.user2==current_user.id :
-                user=user.query.filter_by(user_id=chatwith_id).first()
+                user=User.query.filter_by(user_id=chatwith_id).first()
                 messages=[[user.user_name]]
                 if form.validate_on_submit() :
                     conversation= Conversation(text = form.text.data, conversing_id= nowuser.id, sender_id= current_user.id  )
                     db.session.add(conversation)
                     db.session.commit()
                 for conversation in Conversation.query.filter_by(conversing_id = nowuser.id).all():
-                        #user=user.query.filter_by(user_id=chatwith_id).first()#just for now
+                        #user=User.query.filter_by(user_id=chatwith_id).first()#just for now
                     message=[conversation.text,conversation.time, conversation.sender_id]
                     messages.append(message)
 
@@ -297,31 +293,31 @@ def filterType(type):
 
     if current_user.type == 'P':
 
-        user = user.query.filter_by(user_id= current_user.id).first()
+        user = User.query.filter_by(user_id= current_user.id).first()
 
         lat = user.user_latitude
         lng = user.user_longitude
 
-        nearbySponsors = nearbySponsorFunc()
-        filteredList = SponsorUser.query.filter_by(sponsor_type=type).all()
-        filteredSponsors = []
+        nearbyusers = nearbyuserFunc()
+        filteredList = User.query.filter_by(user_type=type).all()
+        filteredusers = []
 
-        for sponsor in filteredList:
-            sponsor_data = [sponsor.sponsor_name, sponsor.sponsor_latitude, sponsor.sponsor_longitude, sponsor.sponsor_address, sponsor.user_id]
-            filteredSponsors.append(sponsor_data)
+        for user in filteredList:
+            user_data = [user.user_name, user.user_latitude, user.user_longitude, user.user_address, user.user_id]
+            filteredusers.append(user_data)
 
-        elements = len(filteredSponsors)
-        return render_template('nearList.html', nearby_list = filteredSponsors, lat = lat, lng = lng, elements = elements, user = user)
+        elements = len(filteredusers)
+        return render_template('nearList.html', nearby_list = filteredusers, lat = lat, lng = lng, elements = elements, user = user)
 
     elif current_user.type == 'S':
 
-        sponsorUser = SponsorUser.query.filter_by(user_id=current_user.id).first()
+        user = User.query.filter_by(user_id=current_user.id).first()
 
-        lat = sponsorUser.sponsor_latitude
-        lng = sponsorUser.sponsor_longitude
+        lat = user.user_latitude
+        lng = user.user_longitude
 
         nearbyParties = nearbyuserFunc()
-        filteredList = user.query.filter_by(user_type=type).all()
+        filteredList = User.query.filter_by(user_type=type).all()
         filteredParties = []
 
         for user in filteredList:
@@ -329,7 +325,7 @@ def filterType(type):
             filteredParties.append(user_data)
 
         elements = len(filteredParties)
-        return render_template('nearList.html', nearby_list = filteredParties, lat = lat, lng = lng, elements = elements, sponsorUser = sponsorUser)
+        return render_template('nearList.html', nearby_list = filteredParties, lat = lat, lng = lng, elements = elements, user = user)
 
 
 
@@ -340,32 +336,32 @@ def filterKind(kind):
 
     if current_user.type == 'P':
 
-        user = user.query.filter_by(user_id= current_user.id).first()
+        user = User.query.filter_by(user_id= current_user.id).first()
 
         lat = user.user_latitude
         lng = user.user_longitude
 
-        nearbySponsors = nearbySponsorFunc()
-        filteredList = SponsorUser.query.filter_by(sponsor_kind=kind).all()
-        filteredSponsors = []
+        nearbyusers = nearbyuserFunc()
+        filteredList = User.query.filter_by(user_kind=kind).all()
+        filteredusers = []
 
-        for sponsor in filteredList:
-            sponsor_data = [sponsor.sponsor_name, sponsor.sponsor_latitude, sponsor.sponsor_longitude, sponsor.sponsor_address, sponsor.user_id]
-            filteredSponsors.append(sponsor_data)
+        for user in filteredList:
+            user_data = [user.user_name, user.user_latitude, user.user_longitude, user.user_address, user.user_id]
+            filteredusers.append(user_data)
 
-        elements = len(filteredSponsors)
-        return render_template('nearList.html', nearby_list = filteredSponsors, lat = lat, lng = lng, elements = elements, user = user)
+        elements = len(filteredusers)
+        return render_template('nearList.html', nearby_list = filteredusers, lat = lat, lng = lng, elements = elements, user = user)
 
 
     elif current_user.type == 'S':
 
-        sponsorUser = SponsorUser.query.filter_by(user_id=current_user.id).first()
+        user = User.query.filter_by(user_id=current_user.id).first()
 
-        lat = sponsorUser.sponsor_latitude
-        lng = sponsorUser.sponsor_longitude
+        lat = user.user_latitude
+        lng = user.user_longitude
 
         nearbyParties = nearbyuserFunc()
-        filteredList = user.query.filter_by(user_kind=kind).all()
+        filteredList = User.query.filter_by(user_kind=kind).all()
         filteredParties = []
 
         for user in filteredList:
@@ -373,7 +369,7 @@ def filterKind(kind):
             filteredParties.append(user_data)
 
         elements = len(filteredParties)
-        return render_template('nearList.html', nearby_list = filteredParties, lat = lat, lng = lng, elements = elements, sponsorUser = sponsorUser)
+        return render_template('nearList.html', nearby_list = filteredParties, lat = lat, lng = lng, elements = elements, user = user)
 
 
 def allowed_file(filename):

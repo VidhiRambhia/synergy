@@ -1,12 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="logPage valign col s12 center-align transparent">
-        <form method="POST" action="">
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ user_logo }}">
+        <div class="media-body">
+          <h3 class="account-heading">Welcome, {{ current_user.user_name }}</h3>
+          <p class="text-secondary">{{ current_user.email }}</p>
+        </div>
+      </div>
+        <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <h3 class="amber-text"><b>Join Today</b></h3>
-                <hr>
-                <div class="form-group white-text">
+                <legend class="border-bottom mb-4">Account Info</legend>
+                {{image_file}}
+                <div class="form-group">
                     {{ form.email.label(class="form-control-label") }}
                     {% if form.email.errors %}
                         {{ form.email(class="form-control form-control-lg is-invalid") }}
@@ -19,31 +26,13 @@
                         {{ form.email(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-
                 <div class="form-group">
-                    {{ form.password.label(class="form-control-label") }}
-                    {% if form.password.errors %}
-                        {{ form.password(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.password.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.password(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form.confirm_password.label(class="form-control-label") }}
-                    {% if form.confirm_password.errors %}
-                        {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.confirm_password.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.confirm_password(class="form-control form-control-lg") }}
+                    {{ form.picture.label() }}
+                    {{ form.picture(class="form-control-file") }}
+                    {% if form.picture.errors %}
+                        {% for error in form.picture.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
                     {% endif %}
                 </div>
 
@@ -60,13 +49,9 @@
                         {{ form.user_name(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                <hr>
 
-
-                <h4 class = "amber-text lighten-3">What is it that <b>interests you</b>?</h4>
-                <hr>
-                <div class="form-group input-field">
-                    
+                <div class="form-group">
+                    {{ form.user_interest1.label(class="form-control-label") }}
                     {% if form.user_interest1.errors %}
                         {{ form.user_interest1(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -78,8 +63,9 @@
                         {{ form.user_interest1(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                <div class="form-group input-field">
-                    
+
+                <div class="form-group">
+                    {{ form.user_interest2.label(class="form-control-label") }}
                     {% if form.user_interest2.errors %}
                         {{ form.user_interest2(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -92,9 +78,22 @@
                     {% endif %}
                 </div>
 
-                <br>
-                <h5 class = "amber-text">About you</h4>
-                <div class="form-group input-field col s12">
+                <div class="form-group">
+                    {{ form.user_address.label(class="form-control-label") }}
+                    {% if form.user_address.errors %}
+                        {{ form.user_address(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.user_address.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.user_address(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.user_about.label(class="form-control-label") }}
                     {% if form.user_about.errors %}
                         {{ form.user_about(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -106,35 +105,38 @@
                         {{ form.user_about(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                
-                <hr>
 
-                  
-                 <div class="form-group">
-                    {{ form.user_logo.label(class="form-control-label") }}
-                    {% if form.user_logo.errors %}
-                        {{ form.user_logo(class="form-control form-control-lg is-invalid") }}
+                <div class="form-group">
+                    {{ form.user_fromAmount.label(class="form-control-label") }}
+                    {% if form.user_fromAmount.errors %}
+                        {{ form.user_fromAmount(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.user_logo.errors %}
+                            {% for error in form.user_fromAmount.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.user_logo(class="form-control form-control-lg") }}
+                        {{ form.user_fromAmount(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
 
+                <div class="form-group">
+                    {{ form.user_toAmount.label(class="form-control-label") }}
+                    {% if form.user_toAmount.errors %}
+                        {{ form.user_toAmount(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.user_toAmount.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.user_toAmount(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
             </fieldset>
             <div class="form-group">
-                <a href="{{url_for('login')}}">{{ form.submit(class="button-border hoverable waves-effect waves-light btn-large amber lighten-3 black-text") }}</a>
+                {{ form.submit(class="btn btn-outline-info") }}
             </div>
-
-            <small class="text-muted">
-                Already Have An Account? <a class="ml-2" href="{{ url_for('login') }}">Sign In</a>
-            </small>
         </form>
-            <br>
-    <hr>
     </div>
-
 {% endblock content %}
