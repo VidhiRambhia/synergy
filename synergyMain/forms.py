@@ -10,6 +10,7 @@ class SelectForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     user_name = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
+    user_interests = [('M','Machine Learning'),('B', 'Blockchain'),('C', 'Cybersecurity')]
     user_interest1 = SelectField('Interest', choices=user_interests, validators=[Required()])
     user_interest2 = SelectField('Interest', choices=user_interests, validators=[Required()])
     user_about =  TextAreaField('About Your Organization', validators=[DataRequired()] )
@@ -37,7 +38,7 @@ class UpdateAccountForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Length(max=120) ,Email()])
     password = PasswordField('Update Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    user_name = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)]
+    user_name = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
     user_interests = [('M','Machine Learning'),('B', 'Blockchain'),('C', 'Cybersecurity')]
     user_interest1 = SelectField('Your area of Interest', choices=user_interests, validators=[Required()])
     user_interest2 = SelectField('Your area of Interest', choices=user_interests, validators=[Required()])

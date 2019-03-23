@@ -13,7 +13,7 @@ import requests
 from geopy.geocoders import Nominatim
 from sqlalchemy import or_ , and_
 
-UPLOAD_FOLDER = 'static/UPLOAD_FOLDER'
+UPLOAD_FOLDER = '/static/UPLOAD_FOLDER'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 @app.route("/")
@@ -631,11 +631,10 @@ def upload_file():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
+            filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
-    return render_template('upload.html', title='Uplaod')
+            return redirect(url_for('uploaded_file', filename=filename))
+    return render_template('uploads.html', title='Upload')
     
 
 
