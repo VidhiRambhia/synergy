@@ -1,7 +1,6 @@
 import os
 import secrets
 from synergyMain import app, db
-#from synergyMain.globalVar import shortlist
 from PIL import Image
 from flask import Flask, session, escape, render_template, url_for, flash, redirect, request
 from synergyMain.forms import LoginForm, SelectForm
@@ -10,10 +9,18 @@ import hashlib #for SHA512
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy.orm import Session
 from math import sqrt
-#from googlemaps import Client as GoogleMaps
 import requests
 from geopy.geocoders import Nominatim
 from sqlalchemy import or_ , and_
+# for file uploads
+from flask import Flask, flash, request, redirect, url_for
+from werkzeug.utils import secure_filename
+from flask import send_from_directory
+
+UPLOAD_FOLDER = 'static/UPLOAD_FOLDER'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+app = Flask(__name__)
+
 
 @app.route("/")
 @app.route("/home")
@@ -616,7 +623,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/upload", methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
