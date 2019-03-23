@@ -1,2 +1,2 @@
-from SponsCentral import db
+from synergyMain import db
 db.create_all()
