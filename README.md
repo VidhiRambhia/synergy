@@ -20,9 +20,9 @@ MODULES
 
 The application source codes consist of:
 
- * Flask for Python 3.6
+ * Flask for Python 3.6 
  * HTML5
- * CSS
+ * MaterializeCSS
  * SQLAlchemy for database management
 
 
@@ -33,7 +33,6 @@ The application source codes consist of:
 
 
 This project has been developed as a part of the course Open Source Technologies, Semester IV, Second Year Computer Engineering, Veermata Jijabai Technological Institute, Matunga. <br>
-Background illustra tion for the website by: Indranil Ujagare (BlueDesigns). <br>
 The repository is currently maintained by :
 
 Ms. Nidhee Kamble (nidheekamble)<br>
